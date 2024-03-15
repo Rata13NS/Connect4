@@ -25,13 +25,7 @@ function game() {
     boxes.forEach(function(box, index) {
         box.addEventListener('click', function() {
             if (stopfunction === false) return;
-            if (userCounter === 1) {
-              box.style.backgroundColor = 'green';
-              userCounter = 2;
-            } else {
-              box.style.backgroundColor = 'red';
-              userCounter = 1;
-            }
+            dropColor(index);
             neitherOneWon();
             statusGame();
           });
@@ -58,4 +52,44 @@ function restartButton() {
         createGrid();
         game();
     });
+}
+
+function dropColor(index) {
+    let lastCel;
+    if (index % 7 === 0) {
+        lastCel = 35;
+        changeColor(lastCel);
+    } else if ((index - 1) % 7 === 0) {
+        lastCel = 36;
+        changeColor(lastCel);
+    } else if ((index - 2) % 7 === 0) {
+        lastCel = 37;
+        changeColor(lastCel);
+    } else if ((index - 3) % 7 === 0) {
+        lastCel = 38;
+        changeColor(lastCel);
+    } else if ((index - 4) % 7 === 0) {
+        lastCel = 39;
+        changeColor(lastCel);
+    } else if ((index - 5) % 7 === 0) {
+        lastCel = 41;
+        changeColor(lastCel);
+    } else if ((index - 6) % 7 === 0) {
+        lastCel = 41;
+        changeColor(lastCel);
+    }
+}
+
+function changeColor(lastCel) {
+    let colCounter = 0;
+    while (boxes[lastCel - colCounter].style.backgroundColor != 'blue') {
+        colCounter += 7;
+    }
+    if (userCounter === 1) {
+        boxes[lastCel - colCounter].style.backgroundColor = 'green';
+        userCounter = 2;
+    } else {
+        boxes[lastCel - colCounter].style.backgroundColor = 'red';
+        userCounter = 1; 
+    }
 }
