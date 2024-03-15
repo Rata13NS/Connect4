@@ -26,18 +26,27 @@ function game() {
         box.addEventListener('click', function() {
             if (stopfunction === false) return;
             dropColor(index);
-            neitherOneWon();
-            statusGame();
+            statusGame(index);
           });
       });
 }
 
-function statusGame() {
-
+function statusGame(index) {
+     if ((index > 2 && index < 7) || (index > 9 && index < 14) || (index > 16 && index < 21) || (index > 23 && index < 28) || (index > 30 && index < 35) || (index > 37 && index <= 41)) {
+        let colorCounter = 0;
+        for (let i = index; i > index - 4; i--) {
+            if (boxes[i].style.backgroundColor != boxes[i - 1].style.backgroundColor) {
+                colorCounter = 1;
+            }
+        }   
+        if (colorCounter === 0) {
+            showWinner();
+            restartButton();
+        }
+    }
 }
 
 function restartButton() {
-    ++buttonCounter;
     let button = document.createElement("button");
     button.textContent="Restart the game";
     button.style.background = "rgba(0, 0, 255, 0.8)";
@@ -72,7 +81,7 @@ function dropColor(index) {
         lastCel = 39;
         changeColor(lastCel);
     } else if ((index - 5) % 7 === 0) {
-        lastCel = 41;
+        lastCel = 40;
         changeColor(lastCel);
     } else if ((index - 6) % 7 === 0) {
         lastCel = 41;
@@ -92,4 +101,8 @@ function changeColor(lastCel) {
         boxes[lastCel - colCounter].style.backgroundColor = 'red';
         userCounter = 1; 
     }
+}
+
+function showWinner() {
+    
 }
