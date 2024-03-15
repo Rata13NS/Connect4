@@ -14,6 +14,7 @@ function createGrid() {
             let box = document.createElement('div');
             box.className = "box";
             row.appendChild(box);
+            box.style.backgroundColor = 'blue';
             boxes.push(box);
         }                
         gridContainer.appendChild(row);
@@ -58,4 +59,3 @@ function restartButton() {
         game();
     });
 }
-
