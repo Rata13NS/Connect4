@@ -5,7 +5,7 @@ let boxes = [];
 let userCounter = 1;
 let buttonCounter = 0;
 let stopfunction = true;
-let lastCel;
+let lastCell;
 
 function createGrid() {
     for (let i = 0; i < 6; i++) {
@@ -32,23 +32,23 @@ function game() {
 }
 
 function statusGame() {
-    let startCel = 35;
-    let copyStartCel = 35;
-    while (startCel >= 7) {
-        copyStartCel = startCel;
-        while (startCel <= copyStartCel + 3) {
-            for (let i = startCel; i <= startCel + 3; ++i) {
-                let box1 = boxes[startCel].style.backgroundColor;
-                let box2 = boxes[startCel + 1].style.backgroundColor;
-                let box3 = boxes[startCel + 2].style.backgroundColor;
-                let box4 = boxes[startCel + 3].style.backgroundColor;
+    let startCell = 35;
+    let copyStartCell = 35;
+    while (startCell >= 7) {
+        copyStartCell = startCell;
+        while (startCell <= copyStartCell + 3) {
+            for (let i = startCell; i <= startCell + 3; ++i) {
+                let box1 = boxes[startCell].style.backgroundColor;
+                let box2 = boxes[startCell + 1].style.backgroundColor;
+                let box3 = boxes[startCell + 2].style.backgroundColor;
+                let box4 = boxes[startCell + 3].style.backgroundColor;
                 if (box1 === box2 && box3 === box4 && box1 === box4 && box1 != 'blue') {
                     return showWinner();
                 }
             }
-            ++startCel;
+            ++startCell;
         }
-        startCel -= 11;
+        startCell -= 11;
     }
 }
 
@@ -71,35 +71,35 @@ function restartButton() {
 
 function dropColor(index) {
     if (index % 7 === 0) {
-        lastCel = 35;
-        changeColor(lastCel);
+        lastCell = 35;
+        changeColor(lastCell);
     } else if ((index - 1) % 7 === 0) {
-        lastCel = 36;
-        changeColor(lastCel);
+        lastCell = 36;
+        changeColor(lastCell);
     } else if ((index - 2) % 7 === 0) {
-        lastCel = 37;
-        changeColor(lastCel);
+        lastCell = 37;
+        changeColor(lastCell);
     } else if ((index - 3) % 7 === 0) {
-        lastCel = 38;
-        changeColor(lastCel);
+        lastCell = 38;
+        changeColor(lastCell);
     } else if ((index - 4) % 7 === 0) {
-        lastCel = 39;
-        changeColor(lastCel);
+        lastCell = 39;
+        changeColor(lastCell);
     } else if ((index - 5) % 7 === 0) {
-        lastCel = 40;
-        changeColor(lastCel);
+        lastCell = 40;
+        changeColor(lastCell);
     } else if ((index - 6) % 7 === 0) {
-        lastCel = 41;
-        changeColor(lastCel);
+        lastCell = 41;
+        changeColor(lastCell);
     }
 }
 
-function changeColor(lastCel) {
+function changeColor(lastCell) {
     let columnCounter = 0;
-    while (boxes[lastCel - columnCounter].style.backgroundColor != 'blue') {
+    while (boxes[lastCell - columnCounter].style.backgroundColor != 'blue') {
         columnCounter += 7;
     }
-    let lastColored = lastCel - columnCounter;
+    let lastColored = lastCell - columnCounter;
     if (userCounter === 1) {
         boxes[lastColored].style.backgroundColor = 'green';
         statusGame();
