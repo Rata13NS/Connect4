@@ -31,44 +31,6 @@ function game() {
       });
 }
 
-function statusGame() {
-    let startCell = 35;
-    let copyStartCell = 35;
-    while (startCell >= 7) {
-        copyStartCell = startCell;
-        while (startCell <= copyStartCell + 3) {
-            for (let i = startCell; i <= startCell + 3; ++i) {
-                let box1 = boxes[startCell].style.backgroundColor;
-                let box2 = boxes[startCell + 1].style.backgroundColor;
-                let box3 = boxes[startCell + 2].style.backgroundColor;
-                let box4 = boxes[startCell + 3].style.backgroundColor;
-                if (box1 === box2 && box3 === box4 && box1 === box4 && box1 != 'blue') {
-                    return showWinner();
-                }
-            }
-            ++startCell;
-        }
-        startCell -= 11;
-    }
-}
-
-function restartButton() {
-    let button = document.createElement("button");
-    button.textContent="Restart the game";
-    button.style.background = "rgba(0, 0, 255, 0.8)";
-    winnerButton.appendChild(button);
-    button.addEventListener('click', function() {
-        button.parentNode.removeChild(button);
-        gridContainer.innerHTML = '';
-        winnerPlayer.innerHTML = '';
-        boxes = [];
-        userCounter = 1;
-        stopfunction = true;
-        createGrid();
-        game();
-    });
-}
-
 function dropColor(index) {
     if (index % 7 === 0) {
         lastCell = 35;
@@ -111,7 +73,99 @@ function changeColor(lastCell) {
     }
 }
 
+function statusGame() {
+    //orizontala
+    let startCell = 35;
+    let copyStartCell = 35;
+    while (startCell >= 0) {
+        copyStartCell = startCell;
+        while (startCell <= copyStartCell + 3) {
+            for (let i = startCell; i <= startCell + 3; ++i) {
+                let box1 = boxes[startCell].style.backgroundColor;
+                let box2 = boxes[startCell + 1].style.backgroundColor;
+                let box3 = boxes[startCell + 2].style.backgroundColor;
+                let box4 = boxes[startCell + 3].style.backgroundColor;
+                if (box1 === box2 && box3 === box4 && box1 === box4 && box1 != 'blue') {
+                    return showWinner();
+                }
+            }
+            ++startCell;
+        }
+        startCell -= 11;
+    }
+    //verticala
+    for (let i = 35; i <= 41; ++i) {
+        startCell = i;
+        while (startCell >= i - 14) {
+            for (let j = startCell; j >= startCell - 21; j = j - 7) {
+                let box1 = boxes[startCell].style.backgroundColor;
+                let box2 = boxes[startCell - 7].style.backgroundColor;
+                let box3 = boxes[startCell - 14].style.backgroundColor;
+                let box4 = boxes[startCell - 21].style.backgroundColor;
+                if (box1 === box2 && box3 === box4 && box1 === box4 && box1 != 'blue') {
+                    return showWinner();
+                }
+            }
+            startCell -= 7;  
+        }
+    }
+    //diagonala secundara
+    let cellCounter = 12;
+    for (let i = 35; i >= 21; i = i - 7) {
+        startCell = i;
+        while (startCell >= i - cellCounter) {
+            for (let j = startCell; j >= startCell - 18; j = j - 6) {
+                let box1 = boxes[startCell].style.backgroundColor;
+                let box2 = boxes[startCell - 6].style.backgroundColor;
+                let box3 = boxes[startCell - 12].style.backgroundColor;
+                let box4 = boxes[startCell - 18].style.backgroundColor;
+                if (box1 === box2 && box3 === box4 && box1 === box4 && box1 != 'blue') {
+                    return showWinner();
+                }
+            }
+            startCell -= 6; 
+        }
+        cellCounter -= 6;
+    }
+    cellCounter = 12;
+    for (let i = 36; i <= 38; ++i) {
+        startCell = i;
+        while (startCell >= i - cellCounter) {
+            for (let j = startCell; j >= startCell - 18; j = j - 6) {
+                let box1 = boxes[startCell].style.backgroundColor;
+                let box2 = boxes[startCell - 6].style.backgroundColor;
+                let box3 = boxes[startCell - 12].style.backgroundColor;
+                let box4 = boxes[startCell - 18].style.backgroundColor;
+                if (box1 === box2 && box3 === box4 && box1 === box4 && box1 != 'blue') {
+                    return showWinner();
+                }
+            }
+            startCell -= 6; 
+        }
+        cellCounter -= 6;
+    }
+    //diagonala principala
+}
+
 function showWinner() {
     winnerPlayer.innerHTML = "Conglaturations to Player " + userCounter + "! You are the winner!";
+    stopfunction = false;
     restartButton();
+}
+
+function restartButton() {
+    let button = document.createElement("button");
+    button.textContent="Restart the game";
+    button.style.background = "rgba(0, 0, 255, 0.8)";
+    winnerButton.appendChild(button);
+    button.addEventListener('click', function() {
+        button.parentNode.removeChild(button);
+        gridContainer.innerHTML = '';
+        winnerPlayer.innerHTML = '';
+        boxes = [];
+        userCounter = 1;
+        stopfunction = true;
+        createGrid();
+        game();
+    });
 }
