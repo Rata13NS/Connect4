@@ -2,9 +2,12 @@ let gridContainer = document.getElementById("gridContainer");
 let winnerPlayer = document.getElementById("statusWinner");
 let winnerButton = document.getElementById("winnerButton");
 let boxes = [];
+let greenCells = [];
+let redCells = [];
 let userCounter = 1;
 let buttonCounter = 0;
 let stopfunction = true;
+let lastCel;
 
 function createGrid() {
     for (let i = 0; i < 6; i++) {
@@ -30,18 +33,21 @@ function game() {
       });
 }
 
-function statusGame(lastCel) {
-     if ((lastCel > 2 && lastCel < 7) || (lastCel > 9 && lastCel < 14) || (lastCel > 16 && lastCel < 21) || (lastCel > 23 && lastCel < 28) || (lastCel> 30 && lastCel < 35) || (lastCel > 37 && lastCel <= 41)) {
-        let colorCounter = 0;
-        for (let i = lastCel; i > lastCel- 4; i--) {
-            if (boxes[i].style.backgroundColor != boxes[i - 1].style.backgroundColor) {
-                colorCounter = 1;
+function statusGame() {
+    let startCel = 35;
+    while (startCel >= 7) {
+        for (let i = startCel; i <= startCel + 3; ++i) {
+            let box1 = boxes[startCel].style.backgroundColor;
+            let box2 = boxes[startCel + 1].style.backgroundColor;
+            let box3 = boxes[startCel + 2].style.backgroundColor;
+            let box4 = boxes[startCel + 3].style.backgroundColor;
+            if (box1 === box2 && box3 === box4 && box1 === box4 && box1 != 'blue') {
+                return showWinner();
+            } else {
+                startCel -= 7;
             }
-        }   
-        if (colorCounter === 0) {
-            showWinner();
-            restartButton();
         }
+
     }
 }
 
@@ -63,7 +69,6 @@ function restartButton() {
 }
 
 function dropColor(index) {
-    let lastCel;
     if (index % 7 === 0) {
         lastCel = 35;
         changeColor(lastCel);
@@ -89,23 +94,25 @@ function dropColor(index) {
 }
 
 function changeColor(lastCel) {
-    let colCounter = 0;
-    while (boxes[lastCel - colCounter].style.backgroundColor != 'blue') {
-        colCounter += 7;
+    let columnCounter = 0;
+    while (boxes[lastCel - columnCounter].style.backgroundColor != 'blue') {
+        columnCounter += 7;
     }
-    let lastColored = lastCel - colCounter;
-    console.log(lastColored);
+    let lastColored = lastCel - columnCounter;
     if (userCounter === 1) {
-        boxes[lastCel - colCounter].style.backgroundColor = 'green';
-        statusGame(lastColored);
+        boxes[lastColored].style.backgroundColor = 'green';
+        greenCells.push(lastColored);
+        statusGame();
         userCounter = 2;
     } else {
-        boxes[lastCel - colCounter].style.backgroundColor = 'red';
-        statusGame(lastColored);
+        boxes[lastColored].style.backgroundColor = 'red';
+        redCells.push(lastColored);
+        statusGame();
         userCounter = 1; 
     }
 }
 
 function showWinner() {
-    
+    winnerPlayer.innerHTML = "Conglaturations to Player " + userCounter + "! You are the winner!";
+    restartButton();
 }
