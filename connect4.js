@@ -2,7 +2,7 @@ let gridContainer = document.getElementById("gridContainer");
 let winnerPlayer = document.getElementById("statusWinner");
 let winnerButton = document.getElementById("winnerButton");
 let boxes = [];
-let userCounter = 1;
+let currentPlayer = 1;
 let buttonCounter = 0;
 let stopfunction = true;
 let lastCell;
@@ -62,14 +62,14 @@ function changeColor(lastCell) {
         columnCounter += 7;
     }
     let lastColored = lastCell - columnCounter;
-    if (userCounter === 1) {
+    if (currentPlayer === 1) {
         boxes[lastColored].style.backgroundColor = 'green';
         statusGame();
-        userCounter = 2;
+        currentPlayer = 2;
     } else {
         boxes[lastColored].style.backgroundColor = 'red';
         statusGame();
-        userCounter = 1; 
+        currentPlayer = 1; 
     }
 }
 
@@ -145,10 +145,44 @@ function statusGame() {
         cellCounter -= 6;
     }
     //diagonala principala
+    cellCounter = 16;
+    for (let i = 1; i <= 3; ++i) {
+        startCell = i;
+        while (startCell <= i + cellCounter) {
+            for (let j = startCell; j <= startCell + 24; j = j + 8) {
+                let box1 = boxes[startCell].style.backgroundColor;
+                let box2 = boxes[startCell + 8].style.backgroundColor;
+                let box3 = boxes[startCell + 16].style.backgroundColor;
+                let box4 = boxes[startCell + 24].style.backgroundColor;
+                if (box1 === box2 && box3 === box4 && box1 === box4 && box1 != 'blue') {
+                    return showWinner();
+                }
+            }
+            startCell += 8; 
+        }
+        cellCounter -= 8;
+    }
+    cellCounter = 16;
+    for (let i = 0; i <= 14; i = i + 7) {
+        startCell = i;
+        while (startCell <= i + cellCounter) {
+            for (let j = startCell; j <= startCell + 24; j = j + 8) {
+                let box1 = boxes[startCell].style.backgroundColor;
+                let box2 = boxes[startCell + 8].style.backgroundColor;
+                let box3 = boxes[startCell + 16].style.backgroundColor;
+                let box4 = boxes[startCell + 24].style.backgroundColor;
+                if (box1 === box2 && box3 === box4 && box1 === box4 && box1 != 'blue') {
+                    return showWinner();
+                }
+            }
+            startCell += 8; 
+        }
+        cellCounter -= 8;
+    }    
 }
 
 function showWinner() {
-    winnerPlayer.innerHTML = "Conglaturations to Player " + userCounter + "! You are the winner!";
+    winnerPlayer.innerHTML = "Conglaturations to Player " + currentPlayer + "! You are the winner!";
     stopfunction = false;
     restartButton();
 }
@@ -163,7 +197,7 @@ function restartButton() {
         gridContainer.innerHTML = '';
         winnerPlayer.innerHTML = '';
         boxes = [];
-        userCounter = 1;
+        currentPlayer = 1;
         stopfunction = true;
         createGrid();
         game();
