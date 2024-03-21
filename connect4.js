@@ -75,11 +75,9 @@ function changeColor(lastCell) {
 
 function statusGame() {
     //orizontala
-    let startCell = 35;
-    let copyStartCell = 35;
-    while (startCell >= 0) {
-        copyStartCell = startCell;
-        while (startCell <= copyStartCell + 3) {
+    for (let i = 35; i >= 0; i = i - 7) {
+        startCell = i;
+        while (startCell <= i + 3) {
             for (let i = startCell; i <= startCell + 3; ++i) {
                 let box1 = boxes[startCell].style.backgroundColor;
                 let box2 = boxes[startCell + 1].style.backgroundColor;
@@ -91,7 +89,7 @@ function statusGame() {
             }
             ++startCell;
         }
-        startCell -= 11;
+        startCell -= 7;
     }
     //verticala
     for (let i = 35; i <= 41; ++i) {
