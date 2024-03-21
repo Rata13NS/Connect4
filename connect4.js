@@ -78,7 +78,7 @@ function statusGame() {
     for (let i = 35; i >= 0; i = i - 7) {
         startCell = i;
         while (startCell <= i + 3) {
-            for (let i = startCell; i <= startCell + 3; ++i) {
+            for (let j = startCell; j <= startCell + 3; ++j) {
                 let box1 = boxes[startCell].style.backgroundColor;
                 let box2 = boxes[startCell + 1].style.backgroundColor;
                 let box3 = boxes[startCell + 2].style.backgroundColor;
