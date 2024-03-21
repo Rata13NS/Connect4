@@ -7,12 +7,16 @@ let buttonCounter = 0;
 let stopfunction = true;
 let wonGame = false;
 let lastCell;
+let four = 4;
+let five = 5;
+let six = 6;
+let seven = 7;
 
 function createGrid() {
-    for (let i = 0; i < 6; i++) {
+    for (let i = 0; i < six; i++) {
         let row = document.createElement('div');
         row.className = "row";
-        for (let j = 0; j < 7; j++) {
+        for (let j = 0; j < seven; j++) {
             let box = document.createElement('div');
             box.className = "box";
             row.appendChild(box);
@@ -33,9 +37,9 @@ function game() {
 }
 
 function dropColor(index) {
-    for (let i = 0; i <= 6; ++i) {
-        if ((index - i) % 7 === 0) {
-            lastCell = i + 35;
+    for (let i = 0; i <= six; ++i) {
+        if ((index - i) % seven === 0) {
+            lastCell = i + five * seven;
             return changeColor(lastCell);
         }
     }
@@ -44,7 +48,7 @@ function dropColor(index) {
 function changeColor(lastCell) {
     let columnCounter = 0;
     while (boxes[lastCell - columnCounter].style.backgroundColor != 'blue') {
-        columnCounter += 7;
+        columnCounter += seven;
     }
     let lastColored = lastCell - columnCounter;
     if (currentPlayer === 1) {
@@ -60,7 +64,7 @@ function changeColor(lastCell) {
 
 function statusGame() {
     //orizontala
-    for (let i = 35; i >= 0; i = i - 7) {
+    for (let i = five * seven; i >= 0; i = i - seven) {
         startCell = i;
         while (startCell <= i + 3) {
             for (let j = startCell; j <= startCell + 3; ++j) {
@@ -72,33 +76,33 @@ function statusGame() {
             }
             ++startCell;
         }
-        startCell -= 7;
+        startCell -= seven;
     }
     //verticala
-    for (let i = 35; i <= 41; ++i) {
+    for (let i = five * seven; i <= 41; ++i) {
         startCell = i;
-        while (startCell >= i - 14) {
-            for (let j = startCell; j >= startCell - 21; j = j - 7) {
-                let consecutiveBoxes = -7;
+        while (startCell >= i - seven * 2) {
+            for (let j = startCell; j >= startCell - seven * 3; j = j - seven) {
+                let consecutiveBoxes = -seven;
                 consecutiveBoxesStatus(startCell, consecutiveBoxes);
                 if (wonGame === true) {
                     return showWinner();
                 }
             }
-            startCell -= 7;  
+            startCell -= seven;  
         }
     }
     //diagonala principala
     let i;
-    let cellCounter = 16;
+    let cellCounter = four * four;
     for (i = 1; i <= 3; ++i) {
         mainDiagonal(i);
         if (wonGame === true) {
             return showWinner();
         }
     }
-    cellCounter = 16;
-    for (i = 0; i <= 14; i = i + 7) {
+    cellCounter = four * four;
+    for (i = 0; i <= seven * 2; i = i + seven) {
         mainDiagonal(i);
         if (wonGame === true) {
             return showWinner();
@@ -107,24 +111,24 @@ function statusGame() {
     function mainDiagonal(i) {
         startCell = i;
         while (startCell <= i + cellCounter) {
-            for (let j = startCell; j <= startCell + 24; j = j + 8) {
-                let consecutiveBoxes = 8;
+            for (let j = startCell; j <= startCell + four * six; j = j + four * 2) {
+                let consecutiveBoxes = four * 2;
                 consecutiveBoxesStatus(startCell, consecutiveBoxes);
             }
-            startCell += 8; 
+            startCell += four * 2; 
         }
-        cellCounter -= 8;
+        cellCounter -= four * 2;
     }
     //diagonala secundara
-    cellCounter = 12;
-    for (i = 35; i >= 21; i = i - 7) {
+    cellCounter = six * 2;
+    for (i = five * seven; i >= seven * 3; i = i - seven) {
         secondaryDiagonal(i);
         if (wonGame === true) {
             return showWinner();
         }
     }
-    cellCounter = 12;
-    for (i = 36; i <= 38; ++i) {
+    cellCounter = six * 2;
+    for (i = six * six; i <= six * six + 2; ++i) {
         secondaryDiagonal(i);
         if (wonGame === true) {
             return showWinner();
@@ -133,13 +137,13 @@ function statusGame() {
     function secondaryDiagonal(i) {
         startCell = i;
         while (startCell >= i - cellCounter) {
-            for (let j = startCell; j >= startCell - 18; j = j - 6) {
-                let consecutiveBoxes = -6;
+            for (let j = startCell; j >= startCell - four * four + 2; j = j - six) {
+                let consecutiveBoxes = -six;
                 consecutiveBoxesStatus(startCell, consecutiveBoxes);
             }
-            startCell -= 6; 
+            startCell -= six; 
         }
-        cellCounter -= 6;
+        cellCounter -= six;
     }
 }
 
