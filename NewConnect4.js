@@ -79,7 +79,7 @@ function statusGame() {
         startCell -= seven;
     }
     //verticala
-    for (let i = five * seven; i <= 41; ++i) {
+    for (let i = five * seven; i <= six * six + five; ++i) {
         startCell = i;
         while (startCell >= i - seven * 2) {
             for (let j = startCell; j >= startCell - seven * 3; j = j - seven) {
