@@ -5,6 +5,7 @@ let boxes = [];
 let currentPlayer = 1;
 let buttonCounter = 0;
 let stopfunction = true;
+let wonGame = false;
 let lastCell;
 
 function createGrid() {
@@ -32,27 +33,11 @@ function game() {
 }
 
 function dropColor(index) {
-    if (index % 7 === 0) {
-        lastCell = 35;
-        changeColor(lastCell);
-    } else if ((index - 1) % 7 === 0) {
-        lastCell = 36;
-        changeColor(lastCell);
-    } else if ((index - 2) % 7 === 0) {
-        lastCell = 37;
-        changeColor(lastCell);
-    } else if ((index - 3) % 7 === 0) {
-        lastCell = 38;
-        changeColor(lastCell);
-    } else if ((index - 4) % 7 === 0) {
-        lastCell = 39;
-        changeColor(lastCell);
-    } else if ((index - 5) % 7 === 0) {
-        lastCell = 40;
-        changeColor(lastCell);
-    } else if ((index - 6) % 7 === 0) {
-        lastCell = 41;
-        changeColor(lastCell);
+    for (let i = 0; i <= 6; ++i) {
+        if ((index - i) % 7 === 0) {
+            lastCell = i + 35;
+            return changeColor(lastCell);
+        }
     }
 }
 
@@ -80,7 +65,10 @@ function statusGame() {
         while (startCell <= i + 3) {
             for (let i = startCell; i <= startCell + 3; ++i) {
                 let consecutiveBoxes = 1;
-                consecutiveBoxesStatus(startCell, consecutiveBoxes)
+                consecutiveBoxesStatus(startCell, consecutiveBoxes);
+                if (wonGame === true) {
+                    return showWinner();
+                }
             }
             ++startCell;
         }
@@ -92,7 +80,10 @@ function statusGame() {
         while (startCell >= i - 14) {
             for (let j = startCell; j >= startCell - 21; j = j - 7) {
                 let consecutiveBoxes = -7;
-                consecutiveBoxesStatus(startCell, consecutiveBoxes)
+                consecutiveBoxesStatus(startCell, consecutiveBoxes);
+                if (wonGame === true) {
+                    return showWinner();
+                }
             }
             startCell -= 7;  
         }
@@ -104,7 +95,10 @@ function statusGame() {
         while (startCell >= i - cellCounter) {
             for (let j = startCell; j >= startCell - 18; j = j - 6) {
                 let consecutiveBoxes = -6;
-                consecutiveBoxesStatus(startCell, consecutiveBoxes)
+                consecutiveBoxesStatus(startCell, consecutiveBoxes);
+                if (wonGame === true) {
+                    return showWinner();
+                }
             }
             startCell -= 6; 
         }
@@ -116,7 +110,10 @@ function statusGame() {
         while (startCell >= i - cellCounter) {
             for (let j = startCell; j >= startCell - 18; j = j - 6) {
                 let consecutiveBoxes = -6;
-                consecutiveBoxesStatus(startCell, consecutiveBoxes)
+                consecutiveBoxesStatus(startCell, consecutiveBoxes);
+                if (wonGame === true) {
+                    return showWinner();
+                }
             }
             startCell -= 6; 
         }
@@ -129,7 +126,10 @@ function statusGame() {
         while (startCell <= i + cellCounter) {
             for (let j = startCell; j <= startCell + 24; j = j + 8) {
                 let consecutiveBoxes = 8;
-                consecutiveBoxesStatus(startCell, consecutiveBoxes)
+                consecutiveBoxesStatus(startCell, consecutiveBoxes);
+                if (wonGame === true) {
+                    return showWinner();
+                }
             }
             startCell += 8; 
         }
@@ -141,12 +141,25 @@ function statusGame() {
         while (startCell <= i + cellCounter) {
             for (let j = startCell; j <= startCell + 24; j = j + 8) {
                 let consecutiveBoxes = 8;
-                consecutiveBoxesStatus(startCell, consecutiveBoxes)
+                consecutiveBoxesStatus(startCell, consecutiveBoxes);
+                if (wonGame === true) {
+                    return showWinner();
+                }
             }
             startCell += 8; 
         }
         cellCounter -= 8;
     }    
+}
+
+function consecutiveBoxesStatus(startCell, consecutiveBoxes) {
+    let box1 = boxes[startCell].style.backgroundColor;
+    let box2 = boxes[startCell + consecutiveBoxes].style.backgroundColor;
+    let box3 = boxes[startCell + 2 * consecutiveBoxes].style.backgroundColor;
+    let box4 = boxes[startCell + 3 * consecutiveBoxes].style.backgroundColor;
+    if (box1 === box2 && box3 === box4 && box1 === box4 && box1 != 'blue') {
+        wonGame = true;
+    }
 }
 
 function showWinner() {
@@ -167,17 +180,8 @@ function restartButton() {
         boxes = [];
         currentPlayer = 1;
         stopfunction = true;
+        wonGame = false
         createGrid();
         game();
     });
-}
-
-function consecutiveBoxesStatus(startCell, consecutiveBoxes) {
-    let box1 = boxes[startCell].style.backgroundColor;
-    let box2 = boxes[startCell + consecutiveBoxes].style.backgroundColor;
-    let box3 = boxes[startCell + 2 * consecutiveBoxes].style.backgroundColor;
-    let box4 = boxes[startCell + 3 * consecutiveBoxes + 2 * diferenceBetweenBoxes].style.backgroundColor;
-    if (box1 === box2 && box3 === box4 && box1 === box4 && box1 != 'blue') {
-        return showWinner();
-    }
 }
