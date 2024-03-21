@@ -88,68 +88,59 @@ function statusGame() {
             startCell -= 7;  
         }
     }
-    //diagonala secundara
-    let cellCounter = 12;
-    for (let i = 35; i >= 21; i = i - 7) {
-        startCell = i;
-        while (startCell >= i - cellCounter) {
-            for (let j = startCell; j >= startCell - 18; j = j - 6) {
-                let consecutiveBoxes = -6;
-                consecutiveBoxesStatus(startCell, consecutiveBoxes);
-                if (wonGame === true) {
-                    return showWinner();
-                }
-            }
-            startCell -= 6; 
+    //diagonala principala
+    let i;
+    let cellCounter = 16;
+    for (i = 1; i <= 3; ++i) {
+        mainDiagonal(i);
+        if (wonGame === true) {
+            return showWinner();
         }
-        cellCounter -= 6;
+    }
+    cellCounter = 16;
+    for (i = 0; i <= 14; i = i + 7) {
+        mainDiagonal(i);
+        if (wonGame === true) {
+            return showWinner();
+        }
+    }
+    function mainDiagonal(i) {
+        startCell = i;
+        while (startCell <= i + cellCounter) {
+            for (let j = startCell; j <= startCell + 24; j = j + 8) {
+                let consecutiveBoxes = 8;
+                consecutiveBoxesStatus(startCell, consecutiveBoxes);
+            }
+            startCell += 8; 
+        }
+        cellCounter -= 8;
+    }
+    //diagonala secundara
+    cellCounter = 12;
+    for (i = 35; i >= 21; i = i - 7) {
+        secondaryDiagonal(i);
+        if (wonGame === true) {
+            return showWinner();
+        }
     }
     cellCounter = 12;
-    for (let i = 36; i <= 38; ++i) {
+    for (i = 36; i <= 38; ++i) {
+        secondaryDiagonal(i);
+        if (wonGame === true) {
+            return showWinner();
+        }
+    }
+    function secondaryDiagonal(i) {
         startCell = i;
         while (startCell >= i - cellCounter) {
             for (let j = startCell; j >= startCell - 18; j = j - 6) {
                 let consecutiveBoxes = -6;
                 consecutiveBoxesStatus(startCell, consecutiveBoxes);
-                if (wonGame === true) {
-                    return showWinner();
-                }
             }
             startCell -= 6; 
         }
         cellCounter -= 6;
     }
-    //diagonala principala
-    cellCounter = 16;
-    for (let i = 1; i <= 3; ++i) {
-        startCell = i;
-        while (startCell <= i + cellCounter) {
-            for (let j = startCell; j <= startCell + 24; j = j + 8) {
-                let consecutiveBoxes = 8;
-                consecutiveBoxesStatus(startCell, consecutiveBoxes);
-                if (wonGame === true) {
-                    return showWinner();
-                }
-            }
-            startCell += 8; 
-        }
-        cellCounter -= 8;
-    }
-    cellCounter = 16;
-    for (let i = 0; i <= 14; i = i + 7) {
-        startCell = i;
-        while (startCell <= i + cellCounter) {
-            for (let j = startCell; j <= startCell + 24; j = j + 8) {
-                let consecutiveBoxes = 8;
-                consecutiveBoxesStatus(startCell, consecutiveBoxes);
-                if (wonGame === true) {
-                    return showWinner();
-                }
-            }
-            startCell += 8; 
-        }
-        cellCounter -= 8;
-    }    
 }
 
 function consecutiveBoxesStatus(startCell, consecutiveBoxes) {
