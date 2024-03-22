@@ -1,200 +1,174 @@
 let gridContainer = document.getElementById("gridContainer");
 let winnerPlayer = document.getElementById("statusWinner");
 let winnerButton = document.getElementById("winnerButton");
-let boxes = [];
+let grid = [];
 let currentPlayer = 1;
 let buttonCounter = 0;
 let stopfunction = true;
-let lastCell;
+let rows = 6;
+let columns = 7;
 
 function createGrid() {
-    for (let i = 0; i < 6; i++) {
+    for (let i = 0; i < rows; i++) {
         let row = document.createElement('div');
         row.className = "row";
-        for (let j = 0; j < 7; j++) {
+        let newRow = [];
+        for (let j = 0; j < columns; j++) {
             let box = document.createElement('div');
             box.className = "box";
             row.appendChild(box);
             box.style.backgroundColor = 'blue';
-            boxes.push(box);
-        }                
+            newRow.push(box);
+        }
+        grid.push(newRow);
         gridContainer.appendChild(row);
     }
 }
 
 function game() {
-    boxes.forEach(function(box, index) {
-        box.addEventListener('click', function() {
-            if (stopfunction === false) return;
-            dropColor(index);
-          });
-      });
+    grid.forEach(function(row, rowIndex) {
+        row.forEach(function(box, colIndex) {
+            box.addEventListener('click', function() {
+                if (stopfunction === false) return;
+                dropColor(colIndex);
+            });
+        });
+    });
 }
 
-function dropColor(index) {
-    if (index % 7 === 0) {
-        lastCell = 35;
-        changeColor(lastCell);
-    } else if ((index - 1) % 7 === 0) {
-        lastCell = 36;
-        changeColor(lastCell);
-    } else if ((index - 2) % 7 === 0) {
-        lastCell = 37;
-        changeColor(lastCell);
-    } else if ((index - 3) % 7 === 0) {
-        lastCell = 38;
-        changeColor(lastCell);
-    } else if ((index - 4) % 7 === 0) {
-        lastCell = 39;
-        changeColor(lastCell);
-    } else if ((index - 5) % 7 === 0) {
-        lastCell = 40;
-        changeColor(lastCell);
-    } else if ((index - 6) % 7 === 0) {
-        lastCell = 41;
-        changeColor(lastCell);
+function dropColor(col) {
+    let rowToColor = rows - 1;
+    while (rowToColor >= 0 && grid[rowToColor][col].style.backgroundColor !== 'blue') {
+        rowToColor--;
     }
-}
-
-function changeColor(lastCell) {
-    let columnCounter = 0;
-    while (boxes[lastCell - columnCounter].style.backgroundColor != 'blue') {
-        columnCounter += 7;
-    }
-    let lastColored = lastCell - columnCounter;
     if (currentPlayer === 1) {
-        boxes[lastColored].style.backgroundColor = 'green';
+        grid[rowToColor][col].style.backgroundColor = 'green';
         statusGame();
         currentPlayer = 2;
     } else {
-        boxes[lastColored].style.backgroundColor = 'red';
+        grid[rowToColor][col].style.backgroundColor = 'red';
         statusGame();
-        currentPlayer = 1; 
+        currentPlayer = 1;
     }
 }
 
 function statusGame() {
     //orizontala
-    for (let i = 35; i >= 0; i = i - 7) {
-        startCell = i;
-        while (startCell <= i + 3) {
-            for (let j = startCell; j <= startCell + 3; ++j) {
-                let box1 = boxes[startCell].style.backgroundColor;
-                let box2 = boxes[startCell + 1].style.backgroundColor;
-                let box3 = boxes[startCell + 2].style.backgroundColor;
-                let box4 = boxes[startCell + 3].style.backgroundColor;
-                if (box1 === box2 && box3 === box4 && box1 === box4 && box1 != 'blue') {
-                    return showWinner();
-                }
+    for (let i = rows - 1; i >= 0; --i) {
+        let startCell = 0;
+        while (startCell <= 3) {
+            let grid1 = grid[i][startCell].style.backgroundColor;
+            let grid2 = grid[i][startCell + 1].style.backgroundColor;
+            let grid3 = grid[i][startCell + 2].style.backgroundColor;
+            let grid4 = grid[i][startCell + 3].style.backgroundColor;
+            if (grid1 === grid2 && grid3 === grid4 && grid1 === grid4 && grid1 != 'blue') {
+                return showWinner();
             }
             ++startCell;
         }
-        startCell -= 7;
     }
     //verticala
-    for (let i = 35; i <= 41; ++i) {
-        startCell = i;
-        while (startCell >= i - 14) {
-            for (let j = startCell; j >= startCell - 21; j = j - 7) {
-                let box1 = boxes[startCell].style.backgroundColor;
-                let box2 = boxes[startCell - 7].style.backgroundColor;
-                let box3 = boxes[startCell - 14].style.backgroundColor;
-                let box4 = boxes[startCell - 21].style.backgroundColor;
-                if (box1 === box2 && box3 === box4 && box1 === box4 && box1 != 'blue') {
-                    return showWinner();
-                }
+    for (let i = columns - 1; i >= 0; --i) {
+        startCell = rows - 1;
+        while (startCell >= rows - 3) {
+            let grid1 = grid[startCell][i].style.backgroundColor;
+            let grid2 = grid[startCell - 1][i].style.backgroundColor;
+            let grid3 = grid[startCell - 2][i].style.backgroundColor;
+            let grid4 = grid[startCell - 3][i].style.backgroundColor;
+            if (grid1 === grid2 && grid3 === grid4 && grid1 === grid4 && grid1 != 'blue') {
+                return showWinner();
             }
-            startCell -= 7;  
+            --startCell;
         }
-    }
-    //diagonala secundara
-    let cellCounter = 12;
-    for (let i = 35; i >= 21; i = i - 7) {
-        startCell = i;
-        while (startCell >= i - cellCounter) {
-            for (let j = startCell; j >= startCell - 18; j = j - 6) {
-                let box1 = boxes[startCell].style.backgroundColor;
-                let box2 = boxes[startCell - 6].style.backgroundColor;
-                let box3 = boxes[startCell - 12].style.backgroundColor;
-                let box4 = boxes[startCell - 18].style.backgroundColor;
-                if (box1 === box2 && box3 === box4 && box1 === box4 && box1 != 'blue') {
-                    return showWinner();
-                }
-            }
-            startCell -= 6; 
-        }
-        cellCounter -= 6;
-    }
-    cellCounter = 12;
-    for (let i = 36; i <= 38; ++i) {
-        startCell = i;
-        while (startCell >= i - cellCounter) {
-            for (let j = startCell; j >= startCell - 18; j = j - 6) {
-                let box1 = boxes[startCell].style.backgroundColor;
-                let box2 = boxes[startCell - 6].style.backgroundColor;
-                let box3 = boxes[startCell - 12].style.backgroundColor;
-                let box4 = boxes[startCell - 18].style.backgroundColor;
-                if (box1 === box2 && box3 === box4 && box1 === box4 && box1 != 'blue') {
-                    return showWinner();
-                }
-            }
-            startCell -= 6; 
-        }
-        cellCounter -= 6;
     }
     //diagonala principala
-    cellCounter = 16;
-    for (let i = 1; i <= 3; ++i) {
-        startCell = i;
-        while (startCell <= i + cellCounter) {
-            for (let j = startCell; j <= startCell + 24; j = j + 8) {
-                let box1 = boxes[startCell].style.backgroundColor;
-                let box2 = boxes[startCell + 8].style.backgroundColor;
-                let box3 = boxes[startCell + 16].style.backgroundColor;
-                let box4 = boxes[startCell + 24].style.backgroundColor;
-                if (box1 === box2 && box3 === box4 && box1 === box4 && box1 != 'blue') {
-                    return showWinner();
-                }
+    let cellCounter = 0;
+    for (let i = 2; i >= 0; --i) {
+        let startRowCell = i;
+        let startColCell = 0;
+        while (startColCell <= cellCounter) {
+            let grid1 = grid[startRowCell][startColCell].style.backgroundColor;
+            let grid2 = grid[startRowCell + 1][startColCell + 1].style.backgroundColor;
+            let grid3 = grid[startRowCell + 2][startColCell + 2].style.backgroundColor;
+            let grid4 = grid[startRowCell + 3][startColCell + 3].style.backgroundColor;
+            if (grid1 === grid2 && grid3 === grid4 && grid1 === grid4 && grid1 != 'blue') {
+                return showWinner();
             }
-            startCell += 8; 
+            ++startRowCell;
+            ++startColCell;
         }
-        cellCounter -= 8;
+        ++cellCounter;
     }
-    cellCounter = 16;
-    for (let i = 0; i <= 14; i = i + 7) {
-        startCell = i;
-        while (startCell <= i + cellCounter) {
-            for (let j = startCell; j <= startCell + 24; j = j + 8) {
-                let box1 = boxes[startCell].style.backgroundColor;
-                let box2 = boxes[startCell + 8].style.backgroundColor;
-                let box3 = boxes[startCell + 16].style.backgroundColor;
-                let box4 = boxes[startCell + 24].style.backgroundColor;
-                if (box1 === box2 && box3 === box4 && box1 === box4 && box1 != 'blue') {
-                    return showWinner();
-                }
+    cellCounter = 6;
+    for (let i = 3; i <= 5; ++i) {
+        let startRowCell = i;
+        let startColCell = 6;
+        while (startColCell >= cellCounter) {
+            let grid1 = grid[startRowCell][startColCell].style.backgroundColor;
+            let grid2 = grid[startRowCell - 1][startColCell - 1].style.backgroundColor;
+            let grid3 = grid[startRowCell - 2][startColCell - 2].style.backgroundColor;
+            let grid4 = grid[startRowCell - 3][startColCell - 3].style.backgroundColor;
+            if (grid1 === grid2 && grid3 === grid4 && grid1 === grid4 && grid1 != 'blue') {
+                return showWinner();
             }
-            startCell += 8; 
+            --startRowCell;
+            --startColCell;
         }
-        cellCounter -= 8;
-    }    
+        --cellCounter;
+    } 
+    //diagonala secundara
+    cellCounter = 6;
+    for (let i = 2; i >= 0; --i) {
+        let startRowCell = i;
+        let startColCell = 6;
+        while (cellCounter <= startColCell) {
+            let grid1 = grid[startRowCell][startColCell].style.backgroundColor;
+            let grid2 = grid[startRowCell + 1][startColCell - 1].style.backgroundColor;
+            let grid3 = grid[startRowCell + 2][startColCell - 2].style.backgroundColor;
+            let grid4 = grid[startRowCell + 3][startColCell - 3].style.backgroundColor;
+            if (grid1 === grid2 && grid3 === grid4 && grid1 === grid4 && grid1 != 'blue') {
+                return showWinner();
+            }
+            ++startRowCell;
+            --startColCell;
+        }
+        --cellCounter;
+    }
+    cellCounter = 0;
+    for (let i = 3; i <= 5; ++i) {
+        let startRowCell = i;
+        let startColCell = 0;
+        while (startColCell <= cellCounter) {
+            let grid1 = grid[startRowCell][startColCell].style.backgroundColor;
+            let grid2 = grid[startRowCell - 1][startColCell + 1].style.backgroundColor;
+            let grid3 = grid[startRowCell - 2][startColCell + 2].style.backgroundColor;
+            let grid4 = grid[startRowCell - 3][startColCell + 3].style.backgroundColor;
+            if (grid1 === grid2 && grid3 === grid4 && grid1 === grid4 && grid1 != 'blue') {
+                return showWinner();
+            }
+            --startRowCell;
+            ++startColCell;
+        }
+        ++cellCounter;
+    }
 }
 
 function showWinner() {
-    winnerPlayer.innerHTML = "Conglaturations to Player " + currentPlayer + "! You are the winner!";
+    winnerPlayer.innerHTML = "Congratulations to Player " + currentPlayer + "! You are the winner!";
     stopfunction = false;
     restartButton();
 }
 
 function restartButton() {
     let button = document.createElement("button");
-    button.textContent="Restart the game";
+    button.textContent = "Restart the game";
     button.style.background = "rgba(0, 0, 255, 0.8)";
     winnerButton.appendChild(button);
     button.addEventListener('click', function() {
         button.parentNode.removeChild(button);
         gridContainer.innerHTML = '';
         winnerPlayer.innerHTML = '';
-        boxes = [];
+        grid = [];
         currentPlayer = 1;
         stopfunction = true;
         createGrid();
