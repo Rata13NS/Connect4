@@ -54,7 +54,7 @@ function dropColor(col) {
 
 function statusGame() {
     //orizontala
-    for (let i = rows - 1; i >= 0; --i) {
+    for (let i = rows - 1; i >= 0; i--) {
         let startCell = 0;
         while (startCell <= 3) {
             let grid1 = grid[i][startCell].style.backgroundColor;
@@ -68,7 +68,7 @@ function statusGame() {
         }
     }
     //verticala
-    for (let i = columns - 1; i >= 0; --i) {
+    for (let i = columns - 1; i >= 0; i--) {
         startCell = rows - 1;
         while (startCell >= rows - 3) {
             let grid1 = grid[startCell][i].style.backgroundColor;
@@ -83,7 +83,7 @@ function statusGame() {
     }
     //diagonala principala
     let cellCounter = 0;
-    for (let i = 2; i >= 0; --i) {
+    for (let i = 2; i >= 0; i--) {
         let startRowCell = i;
         let startColCell = 0;
         while (startColCell <= cellCounter) {
@@ -99,10 +99,10 @@ function statusGame() {
         }
         ++cellCounter;
     }
-    cellCounter = 6;
-    for (let i = 3; i <= 5; ++i) {
+    cellCounter = columns - 1;
+    for (let i = 3; i <= rows - 1; i++) {
         let startRowCell = i;
-        let startColCell = 6;
+        let startColCell = columns - 1;
         while (startColCell >= cellCounter) {
             let grid1 = grid[startRowCell][startColCell].style.backgroundColor;
             let grid2 = grid[startRowCell - 1][startColCell - 1].style.backgroundColor;
@@ -117,10 +117,10 @@ function statusGame() {
         --cellCounter;
     } 
     //diagonala secundara
-    cellCounter = 6;
-    for (let i = 2; i >= 0; --i) {
+    cellCounter = columns - 1;
+    for (let i = 2; i >= 0; i--) {
         let startRowCell = i;
-        let startColCell = 6;
+        let startColCell = columns - 1;
         while (cellCounter <= startColCell) {
             let grid1 = grid[startRowCell][startColCell].style.backgroundColor;
             let grid2 = grid[startRowCell + 1][startColCell - 1].style.backgroundColor;
@@ -135,7 +135,7 @@ function statusGame() {
         --cellCounter;
     }
     cellCounter = 0;
-    for (let i = 3; i <= 5; ++i) {
+    for (let i = 3; i <= rows - 1; i++) {
         let startRowCell = i;
         let startColCell = 0;
         while (startColCell <= cellCounter) {
