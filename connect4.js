@@ -57,13 +57,9 @@ function statusGame() {
     for (let i = rows - 1; i >= 0; i--) {
         let startCell = 0;
         while (startCell <= 3) {
-            let grid1 = grid[i][startCell].style.backgroundColor;
-            let grid2 = grid[i][startCell + 1].style.backgroundColor;
-            let grid3 = grid[i][startCell + 2].style.backgroundColor;
-            let grid4 = grid[i][startCell + 3].style.backgroundColor;
-            if (grid1 === grid2 && grid3 === grid4 && grid1 === grid4 && grid1 != 'blue') {
-                return showWinner();
-            }
+            let rowDifference = 0;
+            let colDifference = 1;
+            gridsStatus(i, startCell, rowDifference, colDifference);
             ++startCell;
         }
     }
@@ -71,13 +67,9 @@ function statusGame() {
     for (let i = columns - 1; i >= 0; i--) {
         startCell = rows - 1;
         while (startCell >= rows - 3) {
-            let grid1 = grid[startCell][i].style.backgroundColor;
-            let grid2 = grid[startCell - 1][i].style.backgroundColor;
-            let grid3 = grid[startCell - 2][i].style.backgroundColor;
-            let grid4 = grid[startCell - 3][i].style.backgroundColor;
-            if (grid1 === grid2 && grid3 === grid4 && grid1 === grid4 && grid1 != 'blue') {
-                return showWinner();
-            }
+            let rowDifference = -1;
+            let colDifference = 0;
+            gridsStatus(startCell, i, rowDifference, colDifference);
             --startCell;
         }
     }
@@ -87,13 +79,9 @@ function statusGame() {
         let startRowCell = i;
         let startColCell = 0;
         while (startColCell <= cellCounter) {
-            let grid1 = grid[startRowCell][startColCell].style.backgroundColor;
-            let grid2 = grid[startRowCell + 1][startColCell + 1].style.backgroundColor;
-            let grid3 = grid[startRowCell + 2][startColCell + 2].style.backgroundColor;
-            let grid4 = grid[startRowCell + 3][startColCell + 3].style.backgroundColor;
-            if (grid1 === grid2 && grid3 === grid4 && grid1 === grid4 && grid1 != 'blue') {
-                return showWinner();
-            }
+            let rowDifference = 1;
+            let colDifference = 1;
+            gridsStatus(startRowCell, startColCell, rowDifference, colDifference);
             ++startRowCell;
             ++startColCell;
         }
@@ -104,13 +92,9 @@ function statusGame() {
         let startRowCell = i;
         let startColCell = columns - 1;
         while (startColCell >= cellCounter) {
-            let grid1 = grid[startRowCell][startColCell].style.backgroundColor;
-            let grid2 = grid[startRowCell - 1][startColCell - 1].style.backgroundColor;
-            let grid3 = grid[startRowCell - 2][startColCell - 2].style.backgroundColor;
-            let grid4 = grid[startRowCell - 3][startColCell - 3].style.backgroundColor;
-            if (grid1 === grid2 && grid3 === grid4 && grid1 === grid4 && grid1 != 'blue') {
-                return showWinner();
-            }
+            let rowDifference = -1;
+            let colDifference = -1;
+            gridsStatus(startRowCell, startColCell, rowDifference, colDifference);
             --startRowCell;
             --startColCell;
         }
@@ -122,13 +106,9 @@ function statusGame() {
         let startRowCell = i;
         let startColCell = columns - 1;
         while (cellCounter <= startColCell) {
-            let grid1 = grid[startRowCell][startColCell].style.backgroundColor;
-            let grid2 = grid[startRowCell + 1][startColCell - 1].style.backgroundColor;
-            let grid3 = grid[startRowCell + 2][startColCell - 2].style.backgroundColor;
-            let grid4 = grid[startRowCell + 3][startColCell - 3].style.backgroundColor;
-            if (grid1 === grid2 && grid3 === grid4 && grid1 === grid4 && grid1 != 'blue') {
-                return showWinner();
-            }
+            let rowDifference = 1;
+            let colDifference = -1;
+            gridsStatus(startRowCell, startColCell, rowDifference, colDifference);
             ++startRowCell;
             --startColCell;
         }
@@ -139,17 +119,23 @@ function statusGame() {
         let startRowCell = i;
         let startColCell = 0;
         while (startColCell <= cellCounter) {
-            let grid1 = grid[startRowCell][startColCell].style.backgroundColor;
-            let grid2 = grid[startRowCell - 1][startColCell + 1].style.backgroundColor;
-            let grid3 = grid[startRowCell - 2][startColCell + 2].style.backgroundColor;
-            let grid4 = grid[startRowCell - 3][startColCell + 3].style.backgroundColor;
-            if (grid1 === grid2 && grid3 === grid4 && grid1 === grid4 && grid1 != 'blue') {
-                return showWinner();
-            }
+            let rowDifference = -1;
+            let colDifference = 1;
+            gridsStatus(startRowCell, startColCell, rowDifference, colDifference);
             --startRowCell;
             ++startColCell;
         }
         ++cellCounter;
+    }
+}
+
+function gridsStatus(rowGrid, colGrid, rowDifference, colDifference) {
+    let grid1 = grid[rowGrid][colGrid].style.backgroundColor;
+    let grid2 = grid[rowGrid + 1 * rowDifference][colGrid + 1 * colDifference].style.backgroundColor;
+    let grid3 = grid[rowGrid + 2 * rowDifference][colGrid + 2 * colDifference].style.backgroundColor;
+    let grid4 = grid[rowGrid + 3 * rowDifference][colGrid + 3 * colDifference].style.backgroundColor;
+    if (grid1 === grid2 && grid3 === grid4 && grid1 === grid4 && grid1 != 'blue') {
+        return showWinner();
     }
 }
 
