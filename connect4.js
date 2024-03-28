@@ -53,7 +53,13 @@ function dropColor(col) {
 }
 
 function statusGame() {
-    //orizontala
+    horizontalStatus();
+    verticalStatus();
+    mainDiagonalStatus();
+    secondaryDiagonalStatus();
+}
+
+function horizontalStatus() {
     for (let i = rows - 1; i >= 0; i--) {
         let startCell = 0;
         while (startCell <= 3) {
@@ -63,7 +69,9 @@ function statusGame() {
             ++startCell;
         }
     }
-    //verticala
+}
+
+function verticalStatus() {
     for (let i = columns - 1; i >= 0; i--) {
         startCell = rows - 1;
         while (startCell >= rows - 3) {
@@ -73,7 +81,9 @@ function statusGame() {
             --startCell;
         }
     }
-    //diagonala principala
+}
+
+function mainDiagonalStatus() {
     let cellCounter = 0;
     for (let i = 2; i >= 0; i--) {
         let startRowCell = i;
@@ -100,7 +110,9 @@ function statusGame() {
         }
         --cellCounter;
     } 
-    //diagonala secundara
+}
+
+function secondaryDiagonalStatus() {
     cellCounter = columns - 1;
     for (let i = 2; i >= 0; i--) {
         let startRowCell = i;
